@@ -8,49 +8,58 @@ const keys = require('../../config/keys');
 
 // Load validation
 const registerValidation = require('../../validation/register');
+const loginValidation = require('../../validation/login');
 
 // User model
 const User = require('../../models/User');
 
 router.post('/login', (req, res) => {
-    const email = req.body.email;
-    const password = req.body.password;
+    const {
+        errors,
+        isValid
+    } = loginValidation(req.body);
+    if (!isValid) {
+        res.status(400).json(errors);
+    } else {
+        const email = req.body.email;
+        const password = req.body.password;
 
-    // Finde user by email
-    User.findOne({
-        email
-    }).then(user => {
-        if (!user) {
-            res.status(404).json({
-                email: 'User not found'
-            });
-        } else {
-            // Check password
-            bcrypt.compare(password, user.password)
-                .then((isMatch) => {
-                    if (isMatch) {
-                        // Sign token
-                        const payload = {
-                            id: user.id,
-                            name: user.name,
-                            avatar: user.avatar
-                        };
-                        const token = jwt.sign(payload, keys.jwtKey, {
-                            expiresIn: 3600
-                        });
-
-                        res.json({
-                            success: true,
-                            token: `Bearer ${token}`
-                        });
-                    } else {
-                        res.status(400).json({
-                            password: 'Password incorrect'
-                        });
-                    }
+        // Finde user by email
+        User.findOne({
+            email
+        }).then(user => {
+            if (!user) {
+                res.status(404).json({
+                    email: 'User not found'
                 });
-        }
-    });
+            } else {
+                // Check password
+                bcrypt.compare(password, user.password)
+                    .then((isMatch) => {
+                        if (isMatch) {
+                            // Sign token
+                            const payload = {
+                                id: user.id,
+                                name: user.name,
+                                avatar: user.avatar
+                            };
+                            const token = jwt.sign(payload, keys.jwtKey, {
+                                expiresIn: 3600
+                            });
+
+                            res.json({
+                                success: true,
+                                token: `Bearer ${token}`
+                            });
+                        } else {
+                            res.status(400).json({
+                                password: 'Password incorrect'
+                            });
+                        }
+                    });
+            }
+        });
+    }
 });
 
 router.post('/register', (req, res) => {
