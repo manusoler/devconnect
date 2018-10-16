@@ -32,7 +32,7 @@ module.exports = data => {
     errors.password = "Password  is required";
   }
 
-  if (!val.equals(data.password, data.password)) {
+  if (!val.equals(data.password, data.password2)) {
     errors.password2 = "Passwords must match";
   }
 
