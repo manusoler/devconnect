@@ -15,7 +15,7 @@ import Register from "./components/auth/Register";
 import Dashboard from "./components/dashboard/Dashboard";
 import CreateProfile from "./components/dashboard/CreateProfile";
 import EditProfile from "./components/dashboard/EditProfile";
-import Profiles from "./components/public/Profiles";
+import Profiles from "./components/dashboard/Profiles";
 import AddExperience from "./components/dashboard/AddExperience";
 import AddEducation from "./components/dashboard/AddEducation";
 import { clearCurrentProfile } from "./actions/profileActions";
