@@ -1,50 +1,69 @@
 import React, { Component } from "react";
+import ProfileActions from "./ProfileActions";
 import Education from "./Education";
 import Experience from "./Experience";
+import Spinner from "../common/Spinner";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { getCurrentProfile } from "../../actions/profileActions";
-import { withRouter } from "react-router-dom";
+import { getCurrentProfile, deleteAccount } from "../../actions/profileActions";
+import { Link } from "react-router-dom";
 
 class Dashboard extends Component {
   componentDidMount() {
-    if (!this.props.auth.isAuthenticated) {
-      this.props.history.push("/login");
-    }
+    this.props.getCurrentProfile();
   }
+
+  onDeleteClick = e => this.props.deleteAccount();
 
   render() {
     const { user } = this.props.auth;
+    const { profile, loading } = this.props.profile;
+
+    let dashboardContent;
+
+    if (!profile || loading) {
+      dashboardContent = <Spinner />;
+    } else {
+      // Check if user has profile
+      if (Object.keys(profile).length) {
+        dashboardContent = (
+          <>
+            <ProfileActions />
+            <Education />
+            <Experience />
+            <div style={{ marginBottom: "60px" }}>
+              <button onClick={this.onDeleteClick} className="btn btn-danger">
+                Delete My Account
+              </button>
+            </div>
+          </>
+        );
+      } else {
+        // User has no profile
+        dashboardContent = (
+          <>
+            <p>You have not yet setup a profile, please add some info</p>
+            <Link to="/create-profile" className="btn btn-lg btn-info">
+              Create Profile
+            </Link>
+          </>
+        );
+      }
+    }
     return (
       <div className="dashboard">
         <div className="container">
           <div className="row">
             <div className="col-md-12">
               <h1 className="display-4">Dashboard</h1>
-              <p className="lead text-muted">Welcome {user.name}</p>
-
-              <div className="btn-group mb-4" role="group">
-                <a href="edit-profile.html" className="btn btn-light">
-                  <i className="fas fa-user-circle text-info mr-1" /> Edit
-                  Profile
-                </a>
-                <a href="add-experience.html" className="btn btn-light">
-                  <i className="fab fa-black-tie text-info mr-1" />
-                  Add Experience
-                </a>
-                <a href="add-education.html" className="btn btn-light">
-                  <i className="fas fa-graduation-cap text-info mr-1" />
-                  Add Education
-                </a>
-              </div>
-
-              <Education />
-              <Experience />
-
-              <div style={{ marginBottom: "60px" }}>
-                <button className="btn btn-danger">Delete My Account</button>
-              </div>
+              <p className="lead text-muted">
+                Welcome{" "}
+                <Link to={profile ? `/profile/${profile.handle}` : ""}>
+                  {user.name}
+                </Link>
+              </p>
+              {dashboardContent}
             </div>
           </div>
         </div>
@@ -55,7 +74,9 @@ class Dashboard extends Component {
 
 Dashboard.propTypes = {
   getCurrentProfile: PropTypes.func.isRequired,
-  profile: PropTypes.object.isRequired
+  deleteAccount: PropTypes.func.isRequired,
+  profile: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -65,5 +86,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getCurrentProfile }
-)(withRouter(Dashboard));
+  { getCurrentProfile, deleteAccount }
+)(Dashboard);
