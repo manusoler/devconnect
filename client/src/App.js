@@ -17,6 +17,7 @@ import CreateProfile from "./components/dashboard/CreateProfile";
 import EditProfile from "./components/dashboard/EditProfile";
 import Profiles from "./components/public/Profiles";
 import AddExperience from "./components/dashboard/AddExperience";
+import AddEducation from "./components/dashboard/AddEducation";
 import { clearCurrentProfile } from "./actions/profileActions";
 import "./App.css";
 
@@ -76,6 +77,13 @@ class App extends Component {
                   exact
                   path="/add-experience"
                   component={AddExperience}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/add-education"
+                  component={AddEducation}
                 />
               </Switch>
             </div>

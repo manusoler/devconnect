@@ -87,7 +87,7 @@ class AddExperience extends Component {
                   value={this.state.location}
                   onChange={this.onChange}
                 />
-                <h6>From Date</h6>
+                <h6>* From Date</h6>
                 <TextFieldGroup
                   type="date"
                   name="from"
