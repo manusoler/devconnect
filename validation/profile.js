@@ -16,7 +16,7 @@ module.exports = data => {
   }
 
   if (val.isEmpty(data.status)) {
-    errors.satus = "Status is required";
+    errors.status = "Status is required";
   }
 
   if (val.isEmpty(data.skills)) {
