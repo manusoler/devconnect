@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 class ProfileHeader extends Component {
   render() {
@@ -84,5 +85,9 @@ class ProfileHeader extends Component {
     );
   }
 }
+
+ProfileHeader.propTypes = {
+  profile: PropTypes.object.isRequired
+};
 
 export default ProfileHeader;

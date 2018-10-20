@@ -7,8 +7,8 @@ const ProfileItem = props => {
   currentExp = currentExp.length ? currentExp[0] : null;
   let skillSet = [];
   if (profile.skills) {
-    skillSet = profile.skills.map(skill => (
-      <li className="list-group-item">
+    skillSet = profile.skills.map((skill, index) => (
+      <li key={index} className="list-group-item">
         <i className="fa fa-check pr-1" />
         {skill}
       </li>

@@ -19,6 +19,7 @@ import Profiles from "./components/dashboard/Profiles";
 import Profile from "./components/profile/Profile";
 import AddExperience from "./components/dashboard/AddExperience";
 import AddEducation from "./components/dashboard/AddEducation";
+import NotFound from "./components/common/NotFound";
 import { clearCurrentProfile } from "./actions/profileActions";
 import "./App.css";
 
@@ -88,6 +89,7 @@ class App extends Component {
                   component={AddEducation}
                 />
               </Switch>
+              <Route exact path="/not-found" component={NotFound} />
             </div>
             <Footer />
           </div>
