@@ -42,7 +42,7 @@ class EditProfile extends Component {
       if (profile.skills && profile.skills.length) {
         profile.skills = profile.skills.join(",");
       }
-      this.setState({ ...profile });
+      this.setState({ ...profile, ...profile.social });
     }
   }
 

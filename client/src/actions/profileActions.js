@@ -46,6 +46,25 @@ export const getCurrentProfile = () => dispatch => {
     );
 };
 
+// Get profile by handle
+export const getProfileByHandle = handle => dispatch => {
+  dispatch(setProfileLoading());
+  axios
+    .get(`/api/profile/handle/${handle}`)
+    .then(res =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: null
+      })
+    );
+};
+
 // Fetching profile
 export const setProfileLoading = () => ({
   type: PROFILE_LOADING
@@ -58,6 +77,8 @@ export const clearCurrentProfile = () => ({
 
 // Create profile
 export const createProfile = (profileData, history) => dispatch => {
+  // delete errors
+  dispatch({ type: GET_ERRORS, payload: {} });
   axios
     .post("/api/profile", profileData)
     .then(res => history.push("/dashboard"))
@@ -71,6 +92,8 @@ export const createProfile = (profileData, history) => dispatch => {
 
 // Add experience
 export const addExperience = (expData, history) => dispatch => {
+  // delete errors
+  dispatch({ type: GET_ERRORS, payload: {} });
   axios
     .post("/api/profile/experience", expData)
     .then(res => history.push("/dashboard"))
@@ -103,6 +126,8 @@ export const deleteExperience = expId => dispatch => {
 
 // Add education
 export const addEducation = (expData, history) => dispatch => {
+  // delete errors
+  dispatch({ type: GET_ERRORS, payload: {} });
   axios
     .post("/api/profile/education", expData)
     .then(res => history.push("/dashboard"))
