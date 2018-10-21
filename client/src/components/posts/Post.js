@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getPost } from "../../actions/postActions";
 import PostItem from "./PostItem";
+import CommentItem from "./CommentItem";
 import CommentForm from "./CommentForm";
 import Spinner from "../common/Spinner";
 import { Link } from "react-router-dom";
@@ -14,7 +15,9 @@ class Post extends Component {
 
   render() {
     const { post, loading } = this.props.post;
+    const { auth } = this.props;
     let postContent = <Spinner />;
+    let commentsContent = null;
     if (post && !loading) {
       postContent = (
         <>
@@ -22,7 +25,13 @@ class Post extends Component {
           <CommentForm postId={post._id} />
         </>
       );
+      if (post.comments) {
+        commentsContent = post.comments.map((comment, index) => (
+          <CommentItem key={index} comment={comment} post={post} auth={auth} />
+        ));
+      }
     }
+
     return (
       <div className="post">
         <div className="container">
@@ -32,6 +41,7 @@ class Post extends Component {
                 Back to feed
               </Link>
               {postContent}
+              <div className="comments">{commentsContent}</div>
             </div>
           </div>
         </div>
@@ -42,11 +52,13 @@ class Post extends Component {
 
 Post.propTypes = {
   getPost: PropTypes.func.isRequired,
-  post: PropTypes.object.isRequired
+  post: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  post: state.post
+  post: state.post,
+  auth: state.auth
 });
 
 export default connect(

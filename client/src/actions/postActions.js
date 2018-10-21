@@ -19,6 +19,14 @@ export const addComment = (postId, commentData) => dispatch => {
     .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
 };
 
+// delete comment
+export const deleteComment = (postId, commentId) => dispatch => {
+  axios
+    .delete(`/api/posts/comment/${postId}/${commentId}`)
+    .then(res => dispatch(getPost(postId)))
+    .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
+};
+
 // add post
 export const addPost = postData => dispatch => {
   // delete errors
