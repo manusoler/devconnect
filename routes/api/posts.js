@@ -23,7 +23,7 @@ router.get("/", (req, res) => {
  * @access Public
  */
 router.get("/:post_id", (req, res) => {
-  Post.find({ _id: req.params.post_id })
+  Post.findOne({ _id: req.params.post_id })
     .then(post => res.json(post))
     .catch(err => res.status(400).json({ post: "No post found with that ID" }));
 });

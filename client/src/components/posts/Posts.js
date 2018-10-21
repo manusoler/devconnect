@@ -12,11 +12,12 @@ class Posts extends Component {
   }
 
   render() {
-    const { posts, loading } = this.props.post;
+    const { post, auth } = this.props;
+    const { posts, loading } = post;
     let postsContent = <Spinner />;
     if (posts && !loading) {
       postsContent = posts.map((post, index) => (
-        <PostItem key={index} post={post} />
+        <PostItem key={index} post={post} auth={auth} />
       ));
     }
     return (
@@ -25,7 +26,7 @@ class Posts extends Component {
           <div className="row">
             <div className="col-sm-12">
               <PostForm />
-              <div class="posts">{postsContent}</div>
+              <div className="posts">{postsContent}</div>
             </div>
           </div>
         </div>
@@ -36,11 +37,13 @@ class Posts extends Component {
 
 Posts.propTypes = {
   getPosts: PropTypes.func.isRequired,
-  post: PropTypes.array.isRequired
+  post: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  post: state.post
+  post: state.post,
+  auth: state.auth
 });
 
 export default connect(

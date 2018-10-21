@@ -15,7 +15,11 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case GET_POST:
-      return state;
+      return {
+        ...state,
+        post: action.payload,
+        loading: false
+      };
     case GET_POSTS:
       return {
         ...state,
@@ -23,7 +27,10 @@ export default function(state = initialState, action) {
         loading: false
       };
     case DELETE_POST:
-      return state;
+      return {
+        ...state,
+        posts: state.posts.filter(post => post._id !== action.payload)
+      };
     case ADD_POST:
       return {
         ...state,
